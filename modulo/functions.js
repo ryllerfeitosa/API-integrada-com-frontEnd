@@ -95,7 +95,6 @@ const getListarConversasDeUmContato = function(numero, nome){
         if(Number(item.number) == Number(numero)){
             item.contacts.forEach(function(contato){
                 if(String(nome).toUpperCase() == String(contato.name).toUpperCase()){
-                    console.log("entrei aqui")
                     mensagens.push(contato.messages)
                     exibirDados = {
                         "Name": item.account,
@@ -110,5 +109,40 @@ const getListarConversasDeUmContato = function(numero, nome){
             })
         }
     })
+    return exibirDados
+}
+
+//Retorna uma mensagem tendo como critério de filtro a palavra e o número
+const getPalavraChave = function(numero, palavra){
+    let exibirDados = false
+    dados.contatos['whats-users'].forEach(function(item){
+        if(Number(numero) == Number(item.number)){
+            exibirDados = []
+            item.contacts.forEach(function(contato){
+                let mensagensFiltradas = []
+                contato.messages.forEach(function(mensagem){
+                    // \b: Garante que o "hi" não tenha letras coladas nele (evita o "thinking").
+                    // 'i': Faz o papel do toUpperCase(), ignorando se é maiúsculo ou minúsculo.
+                    const regex = new RegExp(`\\b${palavra}\\b`, 'i')
+                    if(regex.test(mensagem.content)){
+                        mensagensFiltradas.push({
+                            "Sender": mensagem.sender,
+                            "Content": mensagem.content,
+                            "Time": mensagem.time
+                        })
+                    }
+                })
+                if(mensagensFiltradas.length > 0){
+                        exibirDados.push({
+                        "Contact": contato.name,
+                        "Description": contato.description,
+                        "Profile_contact": contato.image,
+                        "Filter_messages": mensagensFiltradas
+                    })
+                }
+            })
+        }
+    })
+
     return exibirDados
 }
