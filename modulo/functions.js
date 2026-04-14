@@ -57,4 +57,58 @@ const getListarDadosDoContato = function(numero){
     return dadosDosContato
 }
 
-console.log(getListarDadosDoContato(11987876567))
+//Retorna todas as mensagens de conversa de um usuário
+const getListarDeMensagens = function(numero){
+    let exibirDados     = false
+    //Cria um objeto com todos os dados
+    dados.contatos['whats-users'].forEach(function(item){
+        if(Number(item.number) == Number(numero)){
+            exibirDados = []
+            //Cria um objeto a partir do atributo contato
+            item.contacts.forEach(function(itemContato){
+                //Array para armazenar as mensagens de um contato
+                let dadosDeMensagem = []
+                //Percorre as mensagens pertencentes a um contato
+                itemContato.messages.forEach(function(itemMensagem){
+                //Cria um objeto com todas as mensagens pertencentes a um contato
+                dadosDeMensagem.push(itemMensagem)
+                })
+                //Cria um objeto com todos os atributos de um contato
+                let mensagemFinal = {
+                    "Name": itemContato.name,
+                    "Description": itemContato.description,
+                    "image": itemContato.image,
+                    "Messages": dadosDeMensagem
+                }
+                exibirDados.push(mensagemFinal)
+            })
+        }
+    })
+    return exibirDados
+}
+
+//Retorna todas as mensagens de um contato do usuario
+const getListarConversasDeUmContato = function(numero, nome){
+    let exibirDados = false
+    let mensagens   = []
+    dados.contatos['whats-users'].forEach(function(item){
+        if(Number(item.number) == Number(numero)){
+            item.contacts.forEach(function(contato){
+                if(String(nome).toUpperCase() == String(contato.name).toUpperCase()){
+                    console.log("entrei aqui")
+                    mensagens.push(contato.messages)
+                    exibirDados = {
+                        "Name": item.account,
+                        "Profile_image": item['profile-image'],
+                        "Number": item.number,
+                        "Contact": contato.name,
+                        "Description": contato.description,
+                        "Profile_contact": contato.image,
+                        "Messages": contato.messages
+                    }
+                }
+            })
+        }
+    })
+    return exibirDados
+}
