@@ -56,7 +56,6 @@ const getListarDadosDoContato = function(numero){
     })
     return dadosDosContato
 }
-
 //Retorna todas as mensagens de conversa de um usuário
 const getListarDeMensagens = function(numero){
     let exibirDados     = false
@@ -115,15 +114,20 @@ const getListarConversasDeUmContato = function(numero, nome){
 //Retorna uma mensagem tendo como critério de filtro a palavra e o número
 const getPalavraChave = function(numero, palavra){
     let exibirDados = false
+    /*
+        \\b: Marcador de limite de palavra (evita encontrar "hi" dentro de "thinking").
+        'i': Faz o papel do toUpperCase(), ignorando se é maiúsculo ou minúsculo.
+        o new RegExp() tem como utilidade filtrar um conteúdo que seja volátil (dinâmico), 
+        como estamos buscando uma palavra que o usuário digitou e não sabemos
+        o conteúdo dela, é necessário criar esse objeto.
+    */
+    const regex = new RegExp(`\\b${palavra}\\b`, 'i')
     dados.contatos['whats-users'].forEach(function(item){
         if(Number(numero) == Number(item.number)){
             exibirDados = []
             item.contacts.forEach(function(contato){
                 let mensagensFiltradas = []
                 contato.messages.forEach(function(mensagem){
-                    // \b: Garante que o "hi" não tenha letras coladas nele (evita o "thinking").
-                    // 'i': Faz o papel do toUpperCase(), ignorando se é maiúsculo ou minúsculo.
-                    const regex = new RegExp(`\\b${palavra}\\b`, 'i')
                     if(regex.test(mensagem.content)){
                         mensagensFiltradas.push({
                             "Sender": mensagem.sender,
@@ -145,4 +149,13 @@ const getPalavraChave = function(numero, palavra){
     })
 
     return exibirDados
+}
+
+module.exports = {
+    getListarDadosDosUsuarios,
+    getListarDadosDaConta,
+    getListarDadosDoContato,
+    getListarDeMensagens,
+    getListarConversasDeUmContato,
+    getPalavraChave
 }
