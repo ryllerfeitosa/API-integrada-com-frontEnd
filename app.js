@@ -40,6 +40,62 @@ app.get('/v1/whatsapp/dados/user', function(request, response){
         response.json({"Message": "Não foi possível encontrar um contato com esse número"})
     }
 })
+
+//Retornar dados pessoais de cada contato do usuário
+app.get('/v1/whatsapp/dados/contacts/user', function(request, response){
+    let numero = request.query.number
+    let exibirDados = contatosWhatsApp.getListarDadosDoContato(numero)
+    if(exibirDados){
+        response.status(200)
+        response.json(exibirDados)
+    }else{
+        response.status(404)
+        response.json({"Message": "Não foi possível encontrar um contato com esse número"})
+    }
+})
+
+//Retornar todas as mensagens trocadas de uma conta do usuário
+app.get('/v1/whatsapp/dados/messages/contacts/user', function(request, response){
+    let numero = request.query.number
+    let exibirDados = contatosWhatsApp.getListarMensagens(numero)
+    if(exibirDados){
+        response.status(200)
+        response.json(exibirDados)
+    }else{
+        response.status(404)
+        response.json({"Message": "Não foi possível encontrar um contato com esse número"})
+    }
+})
+
+//Retornar uma conversa do usuário com um contato, tendo como critério de filtro o número e o nome do contato
+app.get('/v1/whatsapp/dados/messages/contact/user', function(request, response){
+    let numero = request.query.number
+    let nome   = request.query.name
+    let exibirDados = contatosWhatsApp.getListarConversasDeUmContato(numero, nome)
+    if(exibirDados){
+        response.status(200)
+        response.json(exibirDados)
+    }else{
+        response.status(404)
+        response.json({"Message": "Não foi possível encontrar um usuário com esse número ou um contato com esse nome"})
+    }
+})
+
+//Retorna as mensagens filtradas tendo como critério de filtro o número e a palavra chave
+app.get('/v1/whatsapp/dados/filterMessages/user', function(request, response){
+    let palavra = request.query.word
+    let numero  = request.query.number
+    let exibirDados = contatosWhatsApp.getPalavraChave(numero, palavra)
+
+    if(exibirDados){
+        response.status(200)
+        response.json(exibirDados)
+    }else{
+        response.status(404)
+        response.json({"Message": "Não foi possível encontrar um contato com esse número ou uma palavra com esses caracteres"})
+    }
+})
+
 //Retorna todos os dados do usuário independente do número
 app.get('/v1/whatsapp/dados/user', function(request, response){
     let exibirDados = contatosWhatsApp.getListarDadosDosUsuarios()

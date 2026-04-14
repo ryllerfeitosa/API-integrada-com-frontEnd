@@ -57,7 +57,7 @@ const getListarDadosDoContato = function(numero){
     return dadosDosContato
 }
 //Retorna todas as mensagens de conversa de um usuário
-const getListarDeMensagens = function(numero){
+const getListarMensagens = function(numero){
     let exibirDados     = false
     //Cria um objeto com todos os dados
     dados.contatos['whats-users'].forEach(function(item){
@@ -145,6 +145,8 @@ const getPalavraChave = function(numero, palavra){
                     })
                 }
             })
+            if(exibirDados.length == 0)
+                exibirDados = false
         }
     })
 
@@ -155,7 +157,7 @@ module.exports = {
     getListarDadosDosUsuarios,
     getListarDadosDaConta,
     getListarDadosDoContato,
-    getListarDeMensagens,
+    getListarMensagens,
     getListarConversasDeUmContato,
     getPalavraChave
 }
