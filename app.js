@@ -97,12 +97,56 @@ app.get('/v1/whatsapp/dados/filterMessages/user', function(request, response){
 })
 
 //Retorna todos os dados do usuário independente do número
-app.get('/v1/whatsapp/dados/user', function(request, response){
+app.get('/v1/whatsapp/dados/allUsers', function(request, response){
     let exibirDados = contatosWhatsApp.getListarDadosDosUsuarios()
     response.status(200)
     response.json(exibirDados)
 })
 
+//Retorna o caminho para os EndPoints
+app.get('/v1/whatsapp/help', function(request, response){
+    let docAPI = {
+        "API-description": "API para manipular dados de usuários e contatos",
+        "Date": "2026-04-13",
+        "Development": "Rillao the best",
+        "Version": "1.0",
+        "EndPoints": [
+            {
+                "id": 1, 
+                "Rota 1": "/v1/whatsapp/dados/allUsers", 
+                "obs": "Retorna todos os dados do usuário independente do número"
+            }, 
+            {
+                "id": 2, 
+                "Rota 2": "/v1/whatsapp/dados/user/?number=11987876567", 
+                "obs": "Retorna os dados da conta do profile do usuário"
+            },
+            {
+                "id": 3, 
+                "Rota 3": "/v1/whatsapp/dados/contacts/user/?number=11987876567", 
+                "obs": "Retorna dados pessoais de cada contato do usuário"
+            },
+            {
+                "id": 4, 
+                "Rota 4": "/v1/whatsapp/dados/messages/contacts/user/?number=11987876567", 
+                "obs": "Retorna todas as mensagens trocadas de uma conta do usuário"
+            },
+            {
+                "id": 5, 
+                "Rota 5": "/v1/whatsapp/dados/messages/contact/user/?number=11987876567&name=ana maria", 
+                "obs": "Retorna uma conversa do usuário com um contato"
+            },
+            {
+                "id": 6, 
+                "Rota 6": "/v1/whatsapp/dados/filterMessages/user/?number=11987876567&word=hi", 
+                "obs": "Retorna as mensagens filtradas da conta do profile do usuário"
+            },                       
+        ]
+    }
+
+    response.status(200)
+    response.json(docAPI)
+})
 
 app.listen(8080, function(){
     console.log("API funcionando e aguardando novas requisições...")
